@@ -1,6 +1,8 @@
 # This is a branch to test out the config
 
 version: 2.1
+orbs: 
+  opsgenie: opsgenie/opsgenie@1.0.8
 
 jobs:
   hello-job:
@@ -12,6 +14,7 @@ jobs:
     steps:
       - checkout # check out the code in the project directory
       - run: echo "hello world" # run the `echo` command
+      - opsgenie/notify
 
 workflows:
   my-workflow:
