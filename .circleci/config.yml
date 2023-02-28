@@ -1,28 +1,22 @@
+# This is a branch to test out the config
+
 version: 2.1
+orbs: 
+  opsgenie: opsgenie/opsgenie@1.0.8
 
 jobs:
-  build:
-    working_directory: ~/CIRCLECI
+  hello-job:
     docker:
-      - image: "circleci/python:3.6.4"
+      - image: cimg/node:17.2.0 # the primary container, where your job's commands are run
+        auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
     steps:
-      - checkout
-      - run: python3 main.py
-  test:
-    working_directory: ~/CIRCLECI
-    docker:
-      - image: "circleci/python:3.6.4"
-    steps:
-      - checkout
-      - run: python3 main-test.py
+      - checkout # check out the code in the project directory
+      - run: echo "hello world" # run the `echo` command
+      - opsgenie/notify
 
 workflows:
-  build_and_test:
+  my-workflow:
     jobs:
-      - build
-      - test:
-          requires:
-            - build
-
-
-
+      - hello-job
